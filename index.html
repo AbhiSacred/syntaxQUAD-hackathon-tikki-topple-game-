@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Tiki Topple - Battle of the Totems. A fun strategy board game where players stack, topple, and compete with colorful tiki totems!">
+  <title>Tiki Topple – Battle of the Totems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Lilita+One&family=Outfit:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambient Particles -->
+  <div id="particles"></div>
+
+  <!-- WELCOME SCREEN -->
+  <div class="welcome-screen" id="welcome-screen">
+    <div class="welcome-content">
+      <img src="assets/tiki_statue.png" alt="Tiki" class="welcome-tiki welcome-tiki-left">
+      <div class="welcome-center">
+        <h1 class="welcome-title">TIKI TOPPLE</h1>
+        <p class="welcome-subtitle">BATTLE OF THE TOTEMS</p>
+        <div class="welcome-divider"></div>
+        <p class="welcome-prompt">How many players?</p>
+        <div class="player-select-buttons" id="player-select-buttons">
+          <button class="player-count-btn" id="btn-2p" onclick="startGame(2)">
+            <span class="count-number">2</span>
+            <span class="count-label">Players</span>
+          </button>
+          <button class="player-count-btn" id="btn-3p" onclick="startGame(3)">
+            <span class="count-number">3</span>
+            <span class="count-label">Players</span>
+          </button>
+          <button class="player-count-btn" id="btn-4p" onclick="startGame(4)">
+            <span class="count-number">4</span>
+            <span class="count-label">Players</span>
+          </button>
+        </div>
+        <p class="welcome-hint">🎯 Stack, topple & outsmart your opponents!</p>
+      </div>
+      <img src="assets/tiki_statue.png" alt="Tiki" class="welcome-tiki welcome-tiki-right">
+    </div>
+  </div>
+
+  <!-- MAIN GAME WRAPPER (hidden until players chosen) -->
+  <div class="game-wrapper hidden" id="game-wrapper">
+
+    <!-- TOP BAR: Title + Controls -->
+    <header class="top-bar">
+      <div class="title-area">
+        <h1 id="game-title" class="game-title">TIKI TOPPLE</h1>
+        <p class="subtitle">BATTLE OF THE TOTEMS</p>
+      </div>
+      <div class="top-controls">
+        <button id="btn-sound" class="icon-btn" title="Toggle Sound" onclick="toggleSound()">
+          <span class="icon-sound">🔊</span>
+        </button>
+        <button id="btn-fullscreen" class="icon-btn" title="Fullscreen" onclick="toggleFullscreen()">
+          <span>⛶</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN GAME AREA -->
+    <main class="game-area">
+
+      <!-- LEFT: Player Scoreboard -->
+      <section class="panel scoreboard-panel" id="scoreboard-section">
+        <div class="panel-header">
+          <span>Score</span>
+          <span>Secret Goal</span>
+        </div>
+        <div id="scoreboard"></div>
+      </section>
+
+      <!-- CENTER: Tiki Totem Stack -->
+      <section class="center-area">
+        <div class="totem-wrapper">
+          <div class="tiki-statue-left">
+            <img src="assets/tiki_statue.png" alt="Tiki Statue" class="statue-img">
+          </div>
+          <div class="stack-container">
+            <div id="stack" class="totem-stack"></div>
+          </div>
+          <div class="points-scale">
+            <div class="point-label" data-pts="9">9 PTS <span class="arrow-indicator">◄</span></div>
+            <div class="point-label" data-pts="8">8 PTS</div>
+            <div class="point-label" data-pts="7">7 PTS</div>
+            <div class="point-label" data-pts="6">6 PT</div>
+            <div class="point-label" data-pts="5">5 PT</div>
+            <div class="point-label" data-pts="4">4 PT</div>
+            <div class="point-label" data-pts="3">3 PT</div>
+            <div class="point-label" data-pts="2">2 PT</div>
+            <div class="point-label" data-pts="1">1 PT</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Action Cards -->
+      <section class="panel cards-panel">
+        <div class="cards-deck">
+          <div class="deck-card" id="secret-goal-card" title="Your Secret Goal">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+        <h2 class="panel-title">Action Cards</h2>
+        <div class="cards-hand" id="cards-hand">
+          <!-- Cards dealt dynamically -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- BOTTOM BAR -->
+    <footer class="bottom-bar">
+      <div class="bottom-left">
+        <button id="btn-rules" class="bar-btn" onclick="showRules()">
+          <span class="bar-icon">❓</span> Rules
+        </button>
+        <button id="btn-stats" class="bar-btn" onclick="showStats()">
+          <span class="bar-icon">📊</span> Stats
+        </button>
+      </div>
+      <div class="bottom-center">
+        <button id="btn-play" class="play-btn" onclick="handlePlay()">
+          <span id="play-btn-text">PLAY AGAIN</span>
+        </button>
+        <div class="turn-indicator" id="turn-indicator"></div>
+      </div>
+      <div class="bottom-right">
+        <button id="btn-settings" class="bar-btn" onclick="showSettings()">
+          <span class="bar-icon">⚙️</span> Settings
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- MODAL OVERLAY -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+    <div class="modal-content" id="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
